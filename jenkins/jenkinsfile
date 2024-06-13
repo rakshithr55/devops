@@ -5,6 +5,7 @@ pipeline{
             steps{
                 echo "building"
                 echo "working successfully"
+                echo "added auto build"
             }
         }
     }
