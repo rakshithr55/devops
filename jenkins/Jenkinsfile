@@ -4,7 +4,7 @@ pipeline{
     environment {
         GIT_REPO_URL = 'https://github.com/rakshithr55/devops.git'
         REGISTRY = 'rocky5599/devdocker'
-        DOCKERHUB_CREDENTIALS_ID = 'DOCKERHUB_CREDENTIALS_ID' // The ID of the Docker Hub credentials stored in Jenkins
+        DOCKERHUB_CREDENTIALS_ID = 'DOCKERCERD' // The ID of the Docker Hub credentials stored in Jenkins
     }
     
     stages{
@@ -32,16 +32,24 @@ pipeline{
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.REGISTRY}/build:${env.BUILD_ID}")
+                    docker.build("${env.REGISTRY}:${env.BUILD_ID}")
                 }
                 echo 'Image Created!!'
             }
         }
         stage('Push Docker Image') {
             steps {
+                echo 'Pushing started!'
                 script {
-                    docker.withRegistry('', "${env.DOCKERHUB_CREDENTIALS_ID}") {
-                    docker.image("${env.REGISTRY}/build:${env.BUILD_ID}").push()
+                    try {
+                        docker.withRegistry('', "${env.DOCKERHUB_CREDENTIALS_ID}") {
+                            docker.image("${env.REGISTRY}:${env.BUILD_ID}").push()
+                        }
+                        echo 'Docker image pushed successfully.'
+                    } catch (Exception e) {
+                        echo "Failed to push Docker image: ${e.message}"
+                        currentBuild.result = 'FAILURE'
+                        throw e
                     }
                 }
             }
