@@ -2,9 +2,9 @@ pipeline{
     agent any
     
     environment {
-        GIT_REPO_URL = 'https://github.com/Aman-sahu-dev/task.git'
-        REGISTRY = 'amansahuae/practice'
-        DOCKERHUB_CREDENTIALS_ID = 'DOCKERHUBX4K' // The ID of the Docker Hub credentials stored in Jenkins
+        GIT_REPO_URL = 'https://github.com/rakshithr55/devops.git'
+        REGISTRY = 'rocky5599/devdocker'
+        DOCKERHUB_CREDENTIALS_ID = 'DOCKERCRED' // The ID of the Docker Hub credentials stored in Jenkins
     }
     
     stages{
@@ -32,7 +32,7 @@ pipeline{
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.REGISTRY}/builld:${env.BUILD_ID}")
+                    docker.build("${env.REGISTRY}/build:${env.BUILD_ID}")
                 }
                 echo 'Image Created!!'
             }
@@ -41,7 +41,7 @@ pipeline{
             steps {
                 script {
                     docker.withRegistry('', "${DOCKER_CREDENTIALS_ID}") {
-                    docker.image("${env.REGISTRY}/your-image:${env.BUILD_ID}").push()
+                    docker.image("${env.REGISTRY}/build:${env.BUILD_ID}").push()
                     }
                 }
             }
