@@ -4,7 +4,7 @@ pipeline{
     environment {
         GIT_REPO_URL = 'https://github.com/rakshithr55/devops.git'
         REGISTRY = 'rocky5599/devdocker'
-        DOCKERHUB_CREDENTIALS_ID = 'DOCKERCERD' // The ID of the Docker Hub credentials stored in Jenkins
+        DOCKERHUB_CREDENTIALS_ID = 'DOCKERCRED' // The ID of the Docker Hub credentials stored in Jenkins
     }
     
     stages{
